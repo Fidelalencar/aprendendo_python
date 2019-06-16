@@ -29,7 +29,7 @@ put  # entrega uma informacao (como post), mas atualizando uma ja existente ou e
 
 ## Intro c
 # Database Engine/Server - Um programa que organiza os dados (MySQL, SQL Server, PosrgreSQL)
-# SQlite e' um engine um pouco difente - e e' o que usamos no curso. E' mais proxima de uma livraria
+# SQlite e' um engine um pouco diferente - e e' o que usamos no curso. E' mais proxima de uma livraria
 # ORACLE e' um engine pago. 
 # Paradigma Relational (paradigma não-SQL = não-relacional)
 # primary key / foreign key
@@ -101,6 +101,8 @@ params = {'title': 'The%', 'author': 1} # E' possivel criar um dict para facilit
 cursor = db.execute('SELECT * FROM book WHERE title LIKE :title AND author_id = :author', params)
 cursor.fetchall()
 
+# tambem e' possivel manipular utilizando  a funcao .format -> ver exemplo de exercicio 3.
+
 
 #5 #######################################################################################
 ################### O banco 'example.db', usado acima, foi criado assim: #################
@@ -157,5 +159,62 @@ INSERT INTO book (id, author_id, title, isbn) VALUES (7, 3, 'Animal Farm', 'XYZ-
 ###################################################################################################
 
 
+# EXEMPLOS DE EXERCIOCIOS
+
+#1. Funcao que importa e imprime a base marvel
+import sqlite3
+
+# Database setup: Please don't change this
+db = sqlite3.connect("file::memory:?cache=shared")
+db.executescript("""
+drop table if exists marvel;
+create table marvel (
+  id integer primary key autoincrement,
+  title text not null,
+  director text not null,
+  tomatoes integer,
+  metacritic integer
+);
+
+-- marvel
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (1, 'Iron Man', 'Jon Favreau', 94, 79);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (2, 'The Incredible Hulk', 'Louis Leterrier', 67, 61);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (3, 'Iron Man 2', 'Jon Favreau', 73, 57);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (4, 'Thor', 'Kenneth Branagh', 77, 57);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (5, 'Captain America: The First Avenger', 'Joe Johnston', 80, 66);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (6, 'Marvels The Avengers', 'Joss Whedon', 92, 69);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (7, 'Iron Man 3', 'Shane Black', 80, 62);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (8, 'Thor: The Dark World', 'Alan Taylor', 66, 54);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (9, 'Captain America: The Winter Soldier', 'Anthony and Joe Russo', 89, 70);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (10, 'Guardians of the Galaxy', 'James Gunn', 91, 76);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (11, 'Avengers: Age of Ultron', 'Joss Whedon', 75, 66);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (12, 'Ant-Man', 'Peyton Reed', 82, 64);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (13, 'Captain America: Civil War', 'Anthony and Joe Russo', 91, 75);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (14, 'Doctor Strange', 'Scott Derrickson', 89, 72);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (15, 'Guardians of the Galaxy Vol. 2', 'James Gunn', 83, 67);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (16, 'Spider-Man: Homecoming', 'Jon Watts', 92, 73);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (17, 'Thor: Ragnarok', 'Taika Waititi', 92, 74);
+INSERT INTO marvel (id, title, director, tomatoes, metacritic) VALUES (18, 'Black Panther', 'Ryan Coogler', 97, 88);
+""")
+# Finish Database Setup
+
+def get_all_movies(db_connection):
+    cursor = db_connection.execute('SELECT * FROM  marvel;')
+    return cursor.fetchall()
 
 
+#2. limitando o numero de dados improtados
+def get_movies_and_directors(db_connection, limit=5):
+    cursor = db_connection.execute('SELECT title, director FROM  marvel;')
+    return cursor.fetchmany(limit)
+
+
+#3. funcao que ordena o filme por uma das ratings de filmes e em ordem descendente ou ascendente
+def get_best_and_worst_movies(db_connection, rating_type, order_dir, limit=5):
+    query = ('SELECT title, {rating_type} FROM marvel ORDER BY '
+             '{rating_type} {direction} LIMIT :limit').format(
+                rating_type=rating_type, direction=order_dir)
+
+    cursor = db_connection.execute(query, {
+      'limit': limit })
+    return cursor.fetchall()
