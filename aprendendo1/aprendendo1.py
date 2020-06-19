@@ -250,10 +250,13 @@ x = {                           # é criada com chaves
 x["primeiro"]   # acessa o valor com esta key
 x = dict()  # criar dicts vazios
 x = {}
-x.keys()   # retorna uma lista com todas as keys do dict
-x.values() # retorna uma lista com todos os valores do dict
-x.items()  # retorna um tuple com todas as "duplas" (key, valor) de um dict
+list(x.keys())   # retorna uma lista com todas as keys do dict
+list(x.values()) # retorna uma lista com todos os valores do dict
+list(x.items())  # retorna um tuple com todas as "duplas" (key, valor) de um dict
 
+x.keys()   # Sem a função list, ele cria um "view object", que não é a lista, mas é facilmente transformável
+x.values() 
+x.items() 
 
 # adicionando ao dict
 x["country_code"] = 81   # para adicionar valores ao dict é preciso colocar  a key e o valor.
