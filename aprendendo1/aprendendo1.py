@@ -197,7 +197,6 @@ tuple(lista_a)  # converte a lista em tuple
 lista = ("arma", "bola", "caderno", "dedo")
 for objeto in lista:  # para retnornar os objetos da lista, "Para cada elemento da lista, retorne o elemento"
     print(objeto)
-    return elemento
 
 import random   # chama o pacote random
 lista_aleatoria = random.choices(lista, k = 2)  # escolhe aleatoriamento dois elementos da lista
