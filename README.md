@@ -1,3 +1,3 @@
 # aprendendo_python
 
-Códigos exercícios para python
+Códigos do primeiro curso que fiz sobre python (parte sao exercicios)
