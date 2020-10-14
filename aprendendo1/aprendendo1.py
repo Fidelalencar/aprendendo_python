@@ -283,6 +283,12 @@ for key in price:        # para interagir com os keys e os valores do dict
 for key, value in price.items()   #  também é possível acessar keys e valores simultâneamente usando .items()
 
 
+# criando um DICT a partir de duas listas 
+b = ("arma", "bola", "caderno", "dedo")
+c = ("a", "b", "c", "d")
+x = {b[i]: c[i] for i in range(len(b))} # criando um DICT a partir de duas listas (usando dictionary comprehension)
+
+
 
 ## SET
 
